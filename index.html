@@ -46,7 +46,28 @@ h1{font-size:22px;margin:0;letter-spacing:-.3px;line-height:1.1}
 /* modes explainer */
 .modes{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px}
 .mode{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:10px 12px;font-size:12.5px;color:var(--muted)}
-.mode b{display:block;color:var(--text);font-size:14px;margin-bottom:2px}
+.mode{text-align:left;transition:transform .12s,background .15s;line-height:1.4}
+.mode:active{transform:scale(.97);background:var(--panel2)}
+.mode b{display:flex;align-items:center;color:var(--text);font-size:15px;margin-bottom:3px}
+.mode .go{margin-left:auto;font-size:20px;color:var(--muted)}
+.mode[data-path="learn"]{border-color:#5b4a24;background:linear-gradient(135deg,#2a2212,var(--panel) 70%)}
+.mode[data-path="best"]{border-color:#2c4a6e;background:linear-gradient(135deg,#15253a,var(--panel) 70%)}
+/* learning path */
+.nextup{display:flex;align-items:center;gap:12px;width:100%;text-align:left;border-radius:16px;padding:12px;margin:4px 0 12px;font-weight:600;transition:transform .12s}
+.nextup:active{transform:scale(.985)}
+.nextup.learn{background:var(--accent);color:var(--accent-ink);box-shadow:0 6px 18px rgba(240,184,74,.18)}
+.nextup.best{background:var(--blue);color:#06192e;box-shadow:0 6px 18px rgba(98,168,240,.18)}
+.nextup .mini{width:52px;height:52px}
+.nextup small{display:block;font-weight:500;opacity:.8;font-size:12.5px}
+.tierh{margin:22px 2px 8px}.tierh b{display:block;font-size:16px}.tierh small{color:var(--muted);font-size:12.5px}
+.prow{display:flex;align-items:center;gap:12px;width:100%;text-align:left;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:10px 12px;margin-bottom:6px;transition:transform .12s,background .15s}
+.prow:active{transform:scale(.985);background:var(--panel2)}
+.prow.done{opacity:.6}
+.rk{width:32px;height:32px;border-radius:9px;background:var(--panel3);display:grid;place-items:center;font-size:12.5px;font-weight:700;color:var(--muted);flex:0 0 auto}
+.prow.done .rk{background:#22381f;color:#a8e39a}
+.prow .ttl{font-size:14.5px}
+.tgl{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--muted);margin-left:auto}
+.tgl .tog{width:40px;height:24px}.tgl .tog::after{width:18px;height:18px}.tgl .tog.on::after{transform:translateX(16px)}
 
 /* drills */
 .drills{display:flex;gap:8px;overflow-x:auto;margin:0 -14px 6px;padding:0 14px 4px;scrollbar-width:none}
@@ -835,7 +856,7 @@ function miniBoard(line,side,plies=8){
 const LOGO=`<svg viewBox="0 0 45 45"><use href="#pc-bn"/></svg>`;
 
 // ================= app state =================
-const app={screen:'home',filter:'all',q:'',op:null,side:null,prev:null,closed:{we4:1,wd4:1,wfl:1,e4:1,d4:1,fl:1}};
+const app={pathMode:'learn',pathSide:'all',hideDone:false,screen:'home',filter:'all',q:'',op:null,side:null,prev:null,closed:{we4:1,wd4:1,wfl:1,e4:1,d4:1,fl:1}};
 const GICON={we4:'♔',wd4:'♕',wfl:'♘',e4:'♚',d4:'♛',fl:'♞'};
 function subgroup(o){if(o.group!=='w')return o.group;const f=o.lines[0].moves.split(' ')[0];return f==='e4'?'we4':f==='d4'?'wd4':'wfl';}
 let S=null;
@@ -843,6 +864,7 @@ function render(){
   const entering=app.prev!==app.screen; app.prev=app.screen;
   if(app.screen==='home') renderHome(entering);
   else if(app.screen==='opening') renderOpening(entering);
+  else if(app.screen==='path') renderPath(entering);
   else renderTrainer(entering);
 }
 function go(screen){app.screen=screen;render();scrollTo(0,0);}
@@ -867,7 +889,7 @@ function renderHome(entering){
       <div class="hstats"><div><b>${tm}</b>lines mastered</div><div><b>${acc}%</b>best-move accuracy</div><div><b>${b.perfect||0}</b>perfect tests</div><div><b>${b.bestStreak}</b>best streak</div></div></div>
   </div>`;
   if(last){const [op,i,side]=last;html+=`<button class="cont" id="contBtn"><span style="font-size:20px">▶</span><div class="grow">Continue ${store.last.mode==='learn'?'learning':'testing'}<small>${esc(op.name)} · ${esc(op.lines[i].name)}</small></div><span>›</span></button>`;}
-  html+=`<div class="modes"><div class="mode"><b>📘 Learn</b>Play every move for <i>both</i> sides. 3 perfect runs = mastered.</div><div class="mode"><b>🎯 Best Move</b>No arrows. Find each correct move yourself.</div></div>
+  html+=`<div class="modes"><button class="mode" data-path="learn"><b>📘 Learn <span class="go">›</span></b>All lines, most common first. Play both sides; 3 perfect runs = mastered.</button><button class="mode" data-path="best"><b>🎯 Best Move <span class="go">›</span></b>Same list, no arrows. Find each correct move yourself.</button></div>
   <div class="sec">Quick drills</div>
   <div class="drills">
     <button class="dcard" data-drill="all"><div class="ic">🎲</div><b>Random mix</b><span>Any line, any opening</span></button>
@@ -913,6 +935,7 @@ function renderHome(entering){
   const cb=$('#contBtn'); if(cb) cb.onclick=()=>{const [op,i,side]=last;startSession({mode:store.last.mode,pool:[[op,i,side]],fixed:true,from:'home'});};
   document.querySelectorAll('[data-filter]').forEach(b=>b.onclick=()=>{app.filter=b.dataset.filter;render();});
   document.querySelectorAll('[data-op]').forEach(b=>b.onclick=()=>{app.op=OPENINGS.find(o=>o.id===b.dataset.op);app.side=app.op.side;go('opening');});
+  document.querySelectorAll('[data-path]').forEach(b=>b.onclick=()=>{app.pathMode=b.dataset.path;go('path');});
   document.querySelectorAll('[data-sec]').forEach(b=>b.onclick=()=>{app.closed[b.dataset.sec]=!app.closed[b.dataset.sec];render();});
   document.querySelectorAll('[data-drill]').forEach(b=>b.onclick=()=>startDrill(b.dataset.drill));
   const s=$('#search'); s.oninput=()=>{app.q=s.value;const pos=s.selectionStart;render();const n=$('#search');n.focus();n.setSelectionRange(pos,pos);};
@@ -953,6 +976,75 @@ function renderOpening(entering){
   document.querySelectorAll('[data-learn]').forEach(b=>b.onclick=()=>startSession({mode:'learn',pool:[[o,+b.dataset.learn,'both']],fixed:true,from:'opening'}));
   document.querySelectorAll('[data-test]').forEach(b=>b.onclick=()=>startSession({mode:'best',pool:[[o,+b.dataset.test,side]],fixed:true,from:'opening'}));
   $('#testRandom').onclick=()=>startSession({mode:'best',pool:o.lines.map((l,i)=>[o,i,side]),drillName:o.name,from:'opening'});
+}
+
+// ================= learning path =================
+// Learning path: every line, from most to least common in real games.
+const RANK=`italian:0 sicilian:0 qg:0 ruy:0 london:0 french:2 caro:1 italian:3 scandi:0 caro:0
+qg:3 kid:0 qg:4 sicilian:8 ruy:2 italian:4 italian:5 scotch:0 french:3 nimzo:0
+slav:0 english:0 sicilian:2 vienna:0 caro:3 french:5 sicilian:10 antisic:0 antisic:1 alapinW:0
+pirc:1 philidor:0 sicilian:7 italian:1 qg:1 catalan:0 reti:0 kia:0 petrov:0 grunfeld:0
+qid:0 modern:0 sicilian:9 morraW:0 london:1 sicilian:4 sicilian:3 french:0 french:1 caro:2
+kg:0 dutch:1 ruy:5 scandi:1 sicilian:1 sicilian:11 grandprix:0 alekhine:0 slav:1 nimzo:1
+kid:2 english:1 ruy:3 ruy:1 sicilian:5 sicilian:6 schev:0 caro:4 fourknights:0 fourknights:1
+qid:2 tromp:0 bishops:0 kia:1 scotch:1 stafford:0 englund:0 kg:3 london:2 italian:2
+scandi:2 benoni:0 dutch:0 colle:0 kingsenglish:0 eng4n:0 hedgehog:0 slavreti:0 kidreti:0 anglogrunfeld:0
+qg:2 french:4 caro:5 pirc:0 pirc:2 vienna:1 petrov:1 philidor:1 kid:1 kid:3
+nimzo:2 nimzo:3 grunfeld:1 grunfeld:2 slav:3 slav:2 catalan:1 qid:1 ruy:4 scotch:2
+alapinW:1 modern:1 bird:0 larsen:1 larsen:0 bdg:0 tromp:1 torre:0 jobava:0 benoni:1
+budapest:0 dutch:2 qg:5 kg:1 kg:2 danish:0 ponziani:0 centergame:0 elephant:0 latvian:0
+schliemann:0 hippo:0 owen:0 nimzodef:0 alekhine:2 alekhine:1 traxler:0 halloween:0 goring:0 vienna:2
+fantasy:0 fantasy:1 cambridge:0 lasker:0 tartakower:0 ragozin:0 semitarrasch:0 qgdvienna:0 chigorin:0 oldindian:0
+averbakh:0 czechpirc:0 lion:0 kalash:0 sic4n:0 slav:4 neogrunfeld:0 schlechter:0 chebanenko:0 english:2
+reti:1 bird:1 colle:1 torre:1 stonewallatk:0 barry:0 veresov:0 morraW:1 bishops:1 ponziani:1
+danish:1 schliemann:1 nimzodef:1 scandi:3 icelandic:0 falkbeer:0 hungarian:0 stgeorge:0 benkoop:0 polish:0
+grob:0 vangeet:0 wing:0 staunton:0 froms:0 agincourt:0 czechbenoni:0 blumenfeld:0 tango:0 polishdef:0
+engdef:0 baltic:0 ruy:6`.split(/\s+/);
+const TIERS=[[25,'⭐ Start here','You\'ll meet these in almost every game'],[60,'🔥 Very common','Learn these next to cover most games'],[110,'👍 Common','Popular alternatives and sidelines'],[160,'📚 Good to know','Less common, but worth knowing'],[9999,'🎲 Rare & surprise weapons','Offbeat lines and tricky gambits']];
+
+let RANKED=null;
+function rankedLines(){
+  if(RANKED) return RANKED;
+  RANKED=RANK.map(k=>{const [id,i]=k.split(':');const o=OPENINGS.find(x=>x.id===id);return o&&o.lines[+i]?{o,i:+i}:null;}).filter(Boolean);
+  OPENINGS.forEach(o=>o.lines.forEach((l,i)=>{if(!RANKED.some(x=>x.o===o&&x.i===i))RANKED.push({o,i});}));
+  RANKED.forEach((x,n)=>x.n=n+1);
+  return RANKED;
+}
+function pathStart(x,mode){startSession({mode,pool:[[x.o,x.i,mode==='learn'?'both':x.o.side]],fixed:true,from:'path'});}
+function renderPath(entering){
+  const mode=app.pathMode, L=rankedLines();
+  const done=L.filter(x=>isMastered(x.o,x.i)).length;
+  const next=L.find(x=>!isMastered(x.o,x.i));
+  const isL=mode==='learn';
+  let html=`<div class="wrap ${entering?'enter':''}"><button class="back" id="back">‹ Home</button>
+  <h1 style="font-size:24px">${isL?'📘 Learning path':'🎯 Best Move'}</h1>
+  <p class="desc" style="margin-top:4px">${isL?`All ${L.length} lines, ordered from the most common to the least. Work from the top down — you play both White and Black, and 3 perfect runs masters a line.`:`All ${L.length} lines, most common first. No arrows: find each move yourself. Tap any line to test it.`}</p>
+  <div class="row" style="display:flex;align-items:center;gap:10px"><div class="grow"><div class="bar" style="margin:0"><i style="width:${done/L.length*100}%"></i></div></div><span class="meta">${done}/${L.length} mastered</span></div>`;
+  if(next) html+=`<button class="nextup ${mode}" id="nextUp">${miniBoard(next.o.lines[next.i],next.o.side)}<div class="grow">${isL?'Learn next':'Test next'} · #${next.n}<small>${esc(next.o.name)} — ${esc(next.o.lines[next.i].name)}</small></div><span style="font-size:22px">›</span></button>`;
+  html+=`<div class="toolbar" style="margin-top:6px"><div class="seg">${[['all','All'],['w','White'],['b','Black']].map(([k,t])=>`<button data-ps="${k}" class="${app.pathSide===k?'on':''}">${t}</button>`).join('')}</div>
+    <label class="tgl">Hide mastered <button class="tog ${app.hideDone?'on':''}" id="hideDone"></button></label></div>`;
+  let ti=0, shown=0;
+  for(const [max,title,sub] of TIERS){
+    const rows=L.filter(x=>x.n<=max&&x.n>(ti?TIERS[ti-1][0]:0)&&(app.pathSide==='all'||x.o.side===app.pathSide)&&!(app.hideDone&&isMastered(x.o,x.i)));
+    ti++;
+    if(!rows.length) continue;
+    html+=`<div class="tierh"><b>${title}</b><small>${sub}</small></div>`;
+    for(const x of rows){
+      shown++;
+      const r=rec(x.o,x.i,'both'), m=r.m;
+      const chip=m?'<span class="chipst done">✓</span>':r.s?`<span class="chipst prog">${r.s}/3</span>`:'';
+      html+=`<button class="prow ${m?'done':''}" data-n="${x.n}"><span class="rk">${m?'✓':x.n}</span><div class="grow"><div class="ttl"><span class="side-dot ${x.o.side}"></span>${esc(x.o.name)}</div>
+        <div class="meta">${x.i===0?'★ ':''}${esc(x.o.lines[x.i].name.replace(' (Main Line)',''))}${x.i===0?' · main line':''}</div></div>${chip}</button>`;
+    }
+  }
+  if(!shown) html+=`<div class="empty">Nothing left here — everything is mastered! 🏆</div>`;
+  html+=`</div>`;
+  $('#app').innerHTML=html;
+  $('#back').onclick=()=>go('home');
+  const nu=$('#nextUp'); if(nu) nu.onclick=()=>pathStart(next,mode);
+  document.querySelectorAll('[data-ps]').forEach(b=>b.onclick=()=>{app.pathSide=b.dataset.ps;render();});
+  $('#hideDone').onclick=()=>{app.hideDone=!app.hideDone;render();};
+  document.querySelectorAll('[data-n]').forEach(b=>b.onclick=()=>pathStart(L[+b.dataset.n-1],mode));
 }
 
 // ================= settings =================
@@ -1134,7 +1226,7 @@ function renderTrainer(entering){
       ${S.line.note&&(S.phase==='demo'||S.done||S.mode==='learn')?`<p class="note"><span>💬</span><span>${esc(S.line.note)}</span></p>`:''}
     </div></div></div>`;
   const on=(id,f)=>{const e=document.getElementById(id);if(e)e.onclick=f;};
-  on('tBack',()=>{clearTimeout(S.timer);if(S.from==='opening'){app.op=S.op;if(S.side!=='both')app.side=S.side;}go(S.from||'home');});
+  on('tBack',()=>{clearTimeout(S.timer);if(S.from==='path'){go('path');return;}if(S.from==='opening'){app.op=S.op;if(S.side!=='both')app.side=S.side;}go(S.from||'home');});
   on('tSound',()=>{store.settings.sound=!store.settings.sound;save();if(store.settings.sound){ac();sfx('move');}render();});
   on('aRestart',resetRun);
   on('aHint',()=>{
@@ -1147,7 +1239,10 @@ function renderTrainer(entering){
   on('aRewatch',()=>{S.phase='demo';resetRun();});
   on('aDemo',()=>{S.phase='demo';resetRun();});
   on('aAgain',resetRun);
-  on('aNextLearn',()=>{const n=(S.li+1)%S.op.lines.length;S.pool=[[S.op,n,S.side]];pickLine(0);});
+  on('aNextLearn',()=>{
+    if(S.from==='path'){const L=rankedLines();const k=L.findIndex(x=>x.o===S.op&&x.i===S.li);
+      for(let j=1;j<=L.length;j++){const c=L[(k+j)%L.length];if(!isMastered(c.o,c.i)){S.op=c.o;S.pool=[[c.o,c.i,'both']];pickLine(0);return;}}}
+    const n=(S.li+1)%S.op.lines.length;S.pool=[[S.op,n,S.side]];pickLine(0);});
   on('aToBest',()=>{S.mode='best';S.pool=[[S.op,S.li,S.op.side]];pickLine(0);});
   on('aLearnIt',()=>{S.mode='learn';pickLine(S.idx);});
   on('aNext',()=>{let i=S.idx;if(S.pool.length>1){while(i===S.idx)i=Math.floor(Math.random()*S.pool.length);}pickLine(i);});
