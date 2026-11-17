@@ -63,6 +63,13 @@ h1{font-size:22px;margin:0;letter-spacing:-.3px;line-height:1.1}
 .chip.on{background:var(--text);color:#111;border-color:var(--text);font-weight:600}
 .sec{display:flex;align-items:baseline;gap:8px;font-size:12px;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin:20px 2px 8px;font-weight:600}
 .sec em{font-style:normal;letter-spacing:0;text-transform:none;opacity:.7}
+.gsec{width:100%;text-align:left;display:flex;align-items:center;gap:12px;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:12px 14px;margin:8px 0;transition:background .15s}
+.gsec.isopen{background:var(--panel2);margin-top:16px}
+.gsec:active{background:var(--panel3)}
+.gsec b{display:block;font-size:15px}.gsec small{display:block;font-size:12px;color:var(--muted)}
+.gi{width:34px;height:34px;border-radius:10px;background:var(--panel3);display:grid;place-items:center;font-size:18px;flex:0 0 auto}
+.chev{display:inline-block;transition:transform .2s;font-size:22px;color:var(--muted);line-height:1}
+.chev.open{transform:rotate(90deg)}
 
 /* opening cards */
 .ocard{display:flex;align-items:center;gap:12px;width:100%;text-align:left;background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:10px 12px 10px 10px;margin-bottom:8px;transition:transform .12s,background .15s}
@@ -559,6 +566,186 @@ const OPENINGS = [
 ];
 
 
+// ===== 74 additional openings =====
+(function(){
+const O=(id,name,eco,side,group,desc,lines)=>OPENINGS.push({id,name,eco,side,group,desc,lines:lines.map(([name,moves,note])=>({name,moves,note}))});
+// ---------- WHITE ----------
+O('bishops',"Bishop's Opening",'C23–C24','w','w','Bishop to c4 straight away, keeping the f-pawn free to push later.',[
+ ['Main Line vs ...Nf6','e4 e5 Bc4 Nf6 d3 c6 Nf3 d5 Bb3 Bd6 Nc3 dxe4 Ng5 O-O Ngxe4','Quiet d3, then Ng5 to pressure the centre.'],
+ ['vs ...Bc5','e4 e5 Bc4 Nf6 d3 Bc5 Nf3 d6 c3 O-O O-O a6 Bb3 Ba7','A slow Italian-style setup.']]);
+O('ponziani','Ponziani Opening','C44','w','w','Prepare d4 with c3 – an old but tricky opening.',[
+ ['Main Line ...Nf6','e4 e5 Nf3 Nc6 c3 Nf6 d4 Nxe4 d5 Ne7 Nxe5 Ng6 Bd3 Nxe5 Bxe4','White chases the knights around and regains the pawn.'],
+ ['Black hits back with ...d5','e4 e5 Nf3 Nc6 c3 d5 Qa4 f6 Bb5 Ne7 exd5 Qxd5 d4','The most direct reply: strike the centre.']]);
+O('danish','Danish Gambit','C21','w','w','Sacrifice two pawns for lightning-fast development and two bishops aiming at the king.',[
+ ['Accepted: Schlechter Defense','e4 e5 d4 exd4 c3 dxc3 Bc4 cxb2 Bxb2 d5 Bxd5 Nf6 Bxf7+ Kxf7 Qxd8 Bb4+ Qd2 Bxd2+ Nxd2','Black gives material back to reach a safe endgame.'],
+ ['Declined with ...d5','e4 e5 d4 exd4 c3 d5 exd5 Qxd5 cxd4 Nc6 Nf3 Bg4 Be2 Bb4+ Nc3','The safest way for Black to avoid the gambit.']]);
+O('centergame','Center Game','C22','w','w','Recapture on d4 with the queen and castle queenside for an attack.',[
+ ['Main Line','e4 e5 d4 exd4 Qxd4 Nc6 Qe3 Nf6 Nc3 Bb4 Bd2 O-O O-O-O Re8','The queen steps to e3 and White castles long.']]);
+O('bird',"Bird's Opening",'A02–A03','w','w','Start with f4 to control e5 – like a Dutch Defense with an extra move.',[
+ ['vs ...d5 (Main Line)','f4 d5 Nf3 Nf6 e3 g6 b3 Bg7 Bb2 O-O Be2 c5 O-O Nc6','Fianchetto the queen bishop toward e5.'],
+ ['vs King\'s Indian setup','f4 Nf6 Nf3 g6 g3 Bg7 Bg2 O-O O-O d6 d3 c5','A Leningrad Dutch with colours reversed.']]);
+O('larsen',"Nimzo-Larsen Attack",'A01','w','w','1.b3 – fianchetto the bishop and fight for the long diagonal.',[
+ ['vs ...e5 (Main Line)','b3 e5 Bb2 Nc6 e3 Nf6 Bb5 d6 Ne2 Bd7 O-O Be7 d4','Pressure e5 with the bishop and the pin on c6.'],
+ ['vs ...d5','b3 d5 Bb2 Nf6 e3 e6 Nf3 c5 Be2 Nc6 O-O Be7 d4','A flexible Queen\'s Indian setup for White.']]);
+O('kia',"King's Indian Attack",'A07–A08','w','w','A system: Nf3, g3, Bg2, O-O, d3, Nbd2 and e4. Works against almost anything.',[
+ ['vs ...d5 & ...c5 (Main Line)','Nf3 d5 g3 Nf6 Bg2 c5 O-O Nc6 d3 e5 Nbd2 Be7 e4 O-O','Build the setup, then strike with e4.'],
+ ['vs the French','e4 e6 d3 d5 Nd2 Nf6 Ngf3 c5 g3 Nc6 Bg2 Be7 O-O O-O Re1','The classic way to avoid French theory.']]);
+O('tromp','Trompowsky Attack','A45','w','w','2.Bg5 right away – unbalance the game before Black can settle in.',[
+ ['2...Ne4 (Main Line)','d4 Nf6 Bg5 Ne4 Bf4 c5 f3 Qa5+ c3 Nf6 d5 Qb6','Black jumps forward; White kicks the knight with f3.'],
+ ['2...e6','d4 Nf6 Bg5 e6 e4 h6 Bxf6 Qxf6 Nc3 d6 Qd2 g5','White gives the bishop for a big centre.']]);
+O('torre','Torre Attack','A46, A48','w','w','d4, Nf3 and Bg5 – a solid system with an annoying pin.',[
+ ['vs ...e6 (Main Line)','d4 Nf6 Nf3 e6 Bg5 c5 e3 h6 Bh4 b6 Nbd2 Bb7 c3 Be7','Pin the knight, then build with e3 and c3.'],
+ ['vs King\'s Indian setup','d4 Nf6 Nf3 g6 Bg5 Bg7 Nbd2 O-O e3 d6 c3 Nbd7 Be2','A calm setup against ...g6.']]);
+O('colle','Colle System','D04–D05','w','w','A simple system: d4, Nf3, e3, Bd3, then the e4 break.',[
+ ['Colle-Koltanowski (Main Line)','d4 d5 Nf3 Nf6 e3 e6 Bd3 c5 c3 Nc6 Nbd2 Bd6 O-O O-O dxc5 Bxc5 e4','Pawns on c3/d4/e3, then push e4.'],
+ ['Colle-Zukertort','d4 d5 Nf3 Nf6 e3 e6 Bd3 c5 b3 Nc6 Bb2 Bd6 O-O O-O Nbd2 b6 Ne5 Bb7','Fianchetto the queen bishop and aim at the king.']]);
+O('stonewallatk','Stonewall Attack','D00','w','w','Pawns on c3, d4, e3, f4 and a knight on e5 for a kingside attack.',[
+ ['Main Line','d4 d5 e3 Nf6 Bd3 e6 f4 c5 c3 Nc6 Nf3 Bd6 O-O O-O Ne5','Plant a knight on e5 and attack.']]);
+O('bdg','Blackmar-Diemer Gambit','D00','w','w','A fighting gambit: give the e-pawn to open the f-file.',[
+ ['Teichmann Defense (Main Line)','d4 d5 e4 dxe4 Nc3 Nf6 f3 exf3 Nxf3 Bg4 h3 Bxf3 Qxf3 c6 Be3 e6 Bd3','White gets lots of activity for the pawn.']]);
+O('jobava','Jobava London','D00','w','w','A modern twist on the London: knight to c3 instead of c3 pawn.',[
+ ['Main Line','d4 d5 Nc3 Nf6 Bf4 e6 e3 Bd6 Bg3 O-O Nb5 Be7 Nf3 a6 Nc3','Jump to b5 to fight for d6 and c7.']]);
+O('veresov','Veresov Attack','D01','w','w','d4, Nc3 and Bg5 – aiming for a quick e4.',[
+ ['Main Line','d4 d5 Nc3 Nf6 Bg5 Nbd7 f3 c6 e4 dxe4 fxe4 e5 dxe5 Qa5','White plays f3 and e4 for a big centre.']]);
+O('polish','Polish Opening (Sokolsky)','A00','w','w','1.b4 – a surprise weapon that grabs queenside space.',[
+ ['vs ...e5 (Main Line)','b4 e5 Bb2 Bxb4 Bxe5 Nf6 c4 O-O Nf3 d5 e3','Trade the b-pawn for Black\'s e-pawn.']]);
+O('halloween','Halloween Gambit','C47','w','w','Sacrifice a knight on e5 for a huge pawn centre – scary for unprepared opponents!',[
+ ['Main Line','e4 e5 Nf3 Nc6 Nc3 Nf6 Nxe5 Nxe5 d4 Ng6 e5 Ng8 Bc4 d5 Bxd5','The pawns roll forward and chase Black\'s knights back.']]);
+O('barry','Barry Attack','A48','w','w','An aggressive system against ...g6 with Bf4 and Ne5.',[
+ ['Main Line','d4 Nf6 Nf3 g6 Nc3 d5 Bf4 Bg7 e3 O-O Be2 c5 Ne5 Nc6 O-O','Knight to e5, then h4-h5 attacks are possible.']]);
+O('morraW','Smith-Morra Gambit','B21','w','w','Against the Sicilian: give a pawn for quick development and open files.',[
+ ['Accepted (Main Line)','e4 c5 d4 cxd4 c3 dxc3 Nxc3 Nc6 Nf3 d6 Bc4 e6 O-O Nf6 Qe2 Be7 Rd1 e5','Rooks to the open c- and d-files.'],
+ ['Declined with ...Nf6','e4 c5 d4 cxd4 c3 Nf6 e5 Nd5 cxd4 d6 Nf3 Nc6 Bc4 Nb6 Bb5','Black turns it into an Alapin-style game.']]);
+O('grandprix','Grand Prix Attack','B23','w','w','Against the Sicilian: Nc3 and f4 for a fast kingside attack.',[
+ ['Main Line','e4 c5 Nc3 Nc6 f4 g6 Nf3 Bg7 Bc4 e6 f5 Nge7 fxe6 dxe6 d3','Open the f-file toward Black\'s king.']]);
+O('alapinW','Alapin Sicilian (2.c3)','B22','w','w','Against the Sicilian: prepare d4 with c3 to avoid open-Sicilian theory.',[
+ ['2...d5 (Main Line)','e4 c5 c3 d5 exd5 Qxd5 d4 Nf6 Nf3 e6 Be2 Nc6 O-O cxd4 cxd4 Be7 Nc3 Qd6','White gets an isolated pawn but easy development.'],
+ ['2...Nf6','e4 c5 c3 Nf6 e5 Nd5 d4 cxd4 Nf3 Nc6 Bc4 Nb6 Bb3 d5 exd6 Qxd6 O-O Be6','Chase the knight with e5.']]);
+O('antisic','Anti-Sicilian: Rossolimo & Moscow','B30, B51','w','w','Bishop to b5 against the Sicilian – avoid the main theory, keep it simple.',[
+ ['Rossolimo (Main Line)','e4 c5 Nf3 Nc6 Bb5 g6 O-O Bg7 Re1 e5 Bxc6 dxc6 d3 Qe7','Give Black doubled pawns.'],
+ ['Moscow Variation','e4 c5 Nf3 d6 Bb5+ Bd7 Bxd7+ Qxd7 c4 Nc6 Nc3 Nf6 d4 cxd4 Nxd4','Trade bishops and grab space with c4.']]);
+O('wing','Sicilian Wing Gambit','B20','w','w','Against the Sicilian: 2.b4 to deflect the c-pawn.',[
+ ['Main Line','e4 c5 b4 cxb4 a3 d5 exd5 Qxd5 Nf3 e5 axb4 Bxb4 c3 Be7','White opens lines on the queenside.']]);
+O('fantasy','Caro-Kann: Fantasy Variation','B12','w','w','Against the Caro-Kann: 3.f3 to hold the centre with pawns.',[
+ ['Main Line ...e6','e4 c6 d4 d5 f3 e6 Nc3 Bb4 Bf4 Ne7 Qd3','White keeps a big pawn centre.'],
+ ['...dxe4 and ...e5','e4 c6 d4 d5 f3 dxe4 fxe4 e5 Nf3 exd4 Bc4 Nf6 O-O','Black hits back fast; White gets attacking chances.']]);
+O('staunton','Staunton Gambit','A82','w','w','Against the Dutch: 2.e4! sacrifices a pawn to punish ...f5.',[
+ ['Main Line','d4 f5 e4 fxe4 Nc3 Nf6 Bg5 Nc6 d5 Ne5 Qd4 Nf7 Bxf6 exf6 Nxe4','White wins the pawn back with a lead in development.']]);
+O('goring','Göring Gambit','C44','w','w','A Scotch where White gambits the c-pawn too for rapid development.',[
+ ['Main Line','e4 e5 Nf3 Nc6 d4 exd4 c3 dxc3 Nxc3 Bb4 Bc4 d6 O-O Bxc3 bxc3 Nf6','Two bishops and open lines for the pawn.']]);
+O('benkoop',"King's Fianchetto Opening (1.g3)",'A00','w','w','Start with g3 and Bg2 – flexible and solid.',[
+ ['Main Line','g3 d5 Bg2 Nf6 Nf3 c6 O-O Bg4 d3 Nbd7 Nbd2 e5 e4','A reversed King\'s Indian setup.']]);
+O('vangeet','Van Geet Opening (1.Nc3)','A00','w','w','1.Nc3 – an offbeat start that often heads for e4.',[
+ ['Main Line','Nc3 d5 e4 d4 Nce2 e5 Ng3 Be6 c3 c5 Nf3','The knight re-routes to g3 to attack f5.']]);
+O('grob','Grob Opening','A00','w','w','1.g4 – a wild surprise popular in fast online games.',[
+ ['Main Line','g4 d5 Bg2 Bxg4 c4 c6 cxd5 cxd5 Qb3 Nc6 Qxb7 Bd7','White attacks b7 after offering the g-pawn.']]);
+// ---------- BLACK vs 1.e4 ----------
+O('schliemann','Schliemann Defense','C63','b','e4','Against the Ruy Lopez: hit back immediately with ...f5.',[
+ ['4.Nc3 (Main Line)','e4 e5 Nf3 Nc6 Bb5 f5 Nc3 fxe4 Nxe4 d5 Nxe5 dxe4 Nxc6 Qg5','Sharp tactics: Black counter-attacks g2.'],
+ ['4.d3','e4 e5 Nf3 Nc6 Bb5 f5 d3 fxe4 dxe4 Nf6 O-O Bc5','A quieter reply; Black develops actively.']]);
+O('latvian','Latvian Gambit','C40','b','e4','2...f5 – a risky, ultra-aggressive gambit.',[
+ ['Main Line','e4 e5 Nf3 f5 Nxe5 Qf6 d4 d6 Nc4 fxe4 Nc3 Qg6','Black opens the f-file and plays for an attack.']]);
+O('elephant','Elephant Gambit','C40','b','e4','2...d5 – strike the centre at once.',[
+ ['Main Line','e4 e5 Nf3 d5 exd5 e4 Qe2 Nf6 d3 Be7 dxe4 O-O','Black gives a pawn for fast development.']]);
+O('schev','Sicilian: Scheveningen','B80–B85','b','e4','A flexible Sicilian "small centre" with pawns on d6 and e6.',[
+ ['Classical (Main Line)','e4 c5 Nf3 d6 d4 cxd4 Nxd4 Nf6 Nc3 e6 Be2 Be7 O-O O-O f4 Nc6 Be3 a6 a4 Qc7','Solid pawns on d6/e6 – ready for ...b5 or ...e5.']]);
+O('kalash','Sicilian: Kalashnikov','B32','b','e4','An early ...e5 Sicilian with fast piece play.',[
+ ['Main Line','e4 c5 Nf3 Nc6 d4 cxd4 Nxd4 e5 Nb5 d6 c4 Be7 N1c3 a6 Na3 f5','Black kicks the knight and strikes with ...f5.']]);
+O('sic4n','Sicilian: Four Knights','B45','b','e4','Develop knights to c6 and f6 and pin with ...Bb4.',[
+ ['Main Line','e4 c5 Nf3 e6 d4 cxd4 Nxd4 Nf6 Nc3 Nc6 Ndb5 Bb4 a3 Bxc3+ Nxc3 d5 exd5 exd5 Bd3','Black gets free piece play with ...d5.']]);
+O('owen',"Owen's Defense",'B00','b','e4','1...b6 – fianchetto the queen bishop to attack e4.',[
+ ['Main Line','e4 b6 d4 Bb7 Bd3 e6 Nf3 c5 c3 Nf6 Qe2 Be7 O-O','Pressure the e4 pawn from b7.']]);
+O('modern','Modern Defense','B06','b','e4','1...g6 – let White build a centre, then attack it from the flanks.',[
+ ['vs 150 Attack (Main Line)','e4 g6 d4 Bg7 Nc3 d6 Be3 a6 Qd2 b5 f3 Nd7','Queenside expansion with ...a6 and ...b5.'],
+ ['vs Classical','e4 g6 d4 Bg7 Nf3 d6 Be2 Nf6 O-O O-O c4','Transposes to a Pirc / King\'s Indian structure.']]);
+O('hippo','Hippopotamus Defense','B06','b','e4','A compact setup: pawns on the 6th rank, bishops on g7 and b7.',[
+ ['Main Line','e4 g6 d4 Bg7 Nc3 d6 Nf3 e6 Be2 Ne7 O-O b6 Re1 Bb7 Bf1 Nd7','Hide behind the "hippo" wall and wait for White to overextend.']]);
+O('nimzodef','Nimzowitsch Defense','B00','b','e4','1...Nc6 – an offbeat knight move that pressures d4.',[
+ ['vs 2.Nf3 (Main Line)','e4 Nc6 Nf3 d6 d4 Nf6 Nc3 Bg4 Be3 e6 h3 Bh5','Pin the knight and hit d4.'],
+ ['vs 2.d4 d5','e4 Nc6 d4 d5 e5 Bf5 c3 e6 Nf3 f6','A French-like structure with the bishop outside.']]);
+O('stgeorge','St. George Defense','B00','b','e4','1...a6 and ...b5 – famously used to beat a World Champion.',[
+ ['Main Line','e4 a6 d4 b5 Nf3 Bb7 Bd3 Nf6 Qe2 e6 a4 c5','Quick queenside expansion and pressure on e4.']]);
+O('hungarian','Hungarian Defense','C50','b','e4','Against the Italian: a quiet ...Be7 instead of ...Bc5.',[
+ ['Main Line','e4 e5 Nf3 Nc6 Bc4 Be7 d4 d6 Nc3 Nf6 h3 O-O O-O','Very solid; Black avoids sharp lines.']]);
+O('traxler','Two Knights: Traxler Counterattack','C57','b','e4','Against Ng5 in the Two Knights: ignore the threat and counter-attack with ...Bc5!',[
+ ['5.Bxf7+ (Main Line)','e4 e5 Nf3 Nc6 Bc4 Nf6 Ng5 Bc5 Bxf7+ Ke7 Bd5 Rf8 O-O d6','Black\'s king walks, but the f-file opens for an attack.']]);
+O('falkbeer','Falkbeer Countergambit','C31–C32','b','e4','Against the King\'s Gambit: counter-strike with ...d5.',[
+ ['Main Line','e4 e5 f4 d5 exd5 e4 d3 Nf6 dxe4 Nxe4 Nf3 Bc5 Qe2 Bf5','Black\'s pieces become very active.']]);
+O('stafford','Stafford Gambit','C42','b','e4','A tricky Petrov gambit full of traps – popular online.',[
+ ['Main Line','e4 e5 Nf3 Nf6 Nxe5 Nc6 Nxc6 dxc6 d3 Bc5 Be2 h5 Nc3 Ng4','Black gives a pawn and aims everything at f2.']]);
+O('lion','Lion Defense','C41','b','e4','A Philidor setup with ...Nbd7 and ...c6 – solid and flexible.',[
+ ['Main Line','e4 d6 d4 Nf6 Nc3 Nbd7 f4 e5 Nf3 exd4 Qxd4 c6 Bc4 d5','Black strikes back in the centre with ...d5.']]);
+O('czechpirc','Pirc: Czech Variation','B07','b','e4','A Pirc with ...c6 instead of ...g6 – solid and less theory.',[
+ ['Main Line','e4 d6 d4 Nf6 Nc3 c6 Nf3 Bg4 Be2 e6 O-O Be7 h3 Bh5','Develop the bishop before ...e6.']]);
+O('icelandic','Icelandic Gambit','B01','b','e4','A Scandinavian gambit: ...e6 to open lines quickly.',[
+ ['Main Line','e4 d5 exd5 Nf6 c4 e6 dxe6 Bxe6 Nf3 Nc6 Be2 Qd7','Black gets rapid development for the pawn.']]);
+// ---------- BLACK vs 1.d4 ----------
+O('englund','Englund Gambit','A40','b','d4','1...e5 – a trappy gambit against 1.d4.',[
+ ['Main Line','d4 e5 dxe5 Nc6 Nf3 Qe7 Bf4 Qb4+ Bd2 Qxb2 Nc3 Bb4 Rb1 Qa3','Black grabs b2 and hopes for tricks.']]);
+O('budapest','Budapest Gambit','A51–A52','b','d4','2...e5 against the Queen\'s pawn – then win the pawn back with ...Ng4.',[
+ ['Main Line','d4 Nf6 c4 e5 dxe5 Ng4 Bf4 Nc6 Nf3 Bb4+ Nbd2 Qe7 e3 Ngxe5 Nxe5 Nxe5 Be2 O-O O-O','Black regains the pawn with active pieces.']]);
+O('oldindian','Old Indian Defense','A53–A55','b','d4','...d6 and ...e5 with the bishop on e7 – a solid King\'s Indian cousin.',[
+ ['Main Line','d4 Nf6 c4 d6 Nc3 e5 Nf3 Nbd7 e4 c6 Be2 Be7 O-O O-O','A sturdy position with a fight for e5.']]);
+O('averbakh','Modern Defense vs 1.d4','A42','b','d4','...g6 and ...d6 against d4 and c4, then a quick ...e5.',[
+ ['Main Line','d4 g6 c4 Bg7 Nc3 d6 e4 c6 Be3 Nd7 Nf3 e5 Be2 Ngf6','Flexible – can still become a King\'s Indian.']]);
+O('czechbenoni','Czech Benoni','A56','b','d4','Close the centre with ...c5 and ...e5, then play on the wings.',[
+ ['Main Line','d4 Nf6 c4 c5 d5 e5 Nc3 d6 e4 Be7 Nf3 O-O Be2 Ne8 O-O g6','Black prepares ...f5 with a locked centre.']]);
+O('blumenfeld','Blumenfeld Gambit','E10','b','d4','Sacrifice the b-pawn to build a big centre.',[
+ ['Accepted','d4 Nf6 c4 e6 Nf3 c5 d5 b5 dxe6 fxe6 cxb5 d5 e3 Bd6','Black gets central pawns on d5 and e6.']]);
+O('tango',"Black Knights' Tango",'A50','b','d4','2...Nc6 – an unusual, flexible knight development.',[
+ ['Main Line','d4 Nf6 c4 Nc6 Nf3 e6 a3 d6 Nc3 g6 e4 Bg7','Black waits to choose between ...e5 and ...d5.']]);
+O('polishdef','Polish Defense','A40','b','d4','1...b5 – grab queenside space right away.',[
+ ['Main Line','d4 b5 e4 Bb7 Bd3 a6 Nf3 e6 O-O c5 c3 Nf6','Pressure on e4 from the long diagonal.']]);
+O('engdef','English Defense','A40','b','d4','...e6 and ...b6 against d4 and c4 – fight for e4 with pieces.',[
+ ['Main Line','d4 e6 c4 b6 a3 Bb7 Nc3 f5 d5 Nf6 g3 Na6','Black controls e4 with the bishop and f-pawn.']]);
+O('ragozin','Ragozin Defense','D38–D39','b','d4','A Queen\'s Gambit Declined with a Nimzo-style ...Bb4.',[
+ ['Main Line','d4 d5 c4 e6 Nc3 Nf6 Nf3 Bb4 cxd5 exd5 Bg5 h6 Bh4 c5 e3 c4','Pin the knight and gain queenside space.']]);
+O('qgdvienna','QGD: Vienna Variation','D39','b','d4','Take on c4 and pin with ...Bb4 – sharp and modern.',[
+ ['Main Line','d4 Nf6 c4 e6 Nf3 d5 Nc3 dxc4 e4 Bb4 Bg5 c5 Bxc4 cxd4 Nxd4 Bxc3+ bxc3 Qa5','Lively piece play in the centre.']]);
+O('semitarrasch','Semi-Tarrasch Defense','D40–D42','b','d4','...c5 and ...Nxd5 – free development and no isolated pawn.',[
+ ['Main Line','d4 Nf6 c4 e6 Nf3 d5 Nc3 c5 cxd5 Nxd5 e4 Nxc3 bxc3 cxd4 cxd4 Bb4+ Bd2 Bxd2+ Qxd2 O-O Bc4 Nc6 O-O','White gets a big centre; Black targets it.']]);
+O('cambridge','Cambridge Springs Defense','D52','b','d4','A QGD with ...c6 and ...Qa5 – pins and tricks on the c3 knight.',[
+ ['Main Line','d4 d5 c4 e6 Nc3 Nf6 Bg5 Nbd7 e3 c6 Nf3 Qa5 Nd2 Bb4 Qc2 O-O','The queen and bishop pressure c3.']]);
+O('lasker','Lasker Defense','D56','b','d4','Trade pieces with ...Ne4 to free Black\'s game.',[
+ ['Main Line','d4 d5 c4 e6 Nc3 Nf6 Bg5 Be7 e3 O-O Nf3 h6 Bh4 Ne4 Bxe7 Qxe7 cxd5 Nxc3 bxc3 exd5','Simplify and reach an equal position.']]);
+O('tartakower','Tartakower Defense','D58','b','d4','A QGD with ...b6 and ...Bb7 – rock solid at the top level.',[
+ ['Main Line','d4 d5 c4 e6 Nc3 Nf6 Bg5 Be7 e3 O-O Nf3 h6 Bh4 b6 Be2 Bb7 Bxf6 Bxf6 cxd5 exd5','The bishop on b7 supports d5.']]);
+O('chigorin','Chigorin Defense','D07','b','d4','2...Nc6 against the Queen\'s Gambit – pieces over pawns.',[
+ ['Main Line','d4 d5 c4 Nc6 Nc3 dxc4 Nf3 Nf6 e4 Bg4 Be3 e6 Bxc4 Bb4','Black pressures d4 with pieces.']]);
+O('baltic','Baltic Defense','D06','b','d4','2...Bf5 – develop the light bishop before ...e6.',[
+ ['Main Line','d4 d5 c4 Bf5 Nf3 e6 Nc3 c6 Qb3 Qb6 c5 Qc7 Bf4 Qc8','The bishop is outside the pawn chain.']]);
+O('chebanenko','Slav: Chebanenko (...a6)','D15','b','d4','A Slav with ...a6 preparing ...b5.',[
+ ['Main Line','d4 d5 c4 c6 Nf3 Nf6 Nc3 a6 e3 b5 b3 Bg4 Be2 Nbd7','Gain queenside space with ...b5.']]);
+O('schlechter','Slav: Schlechter Variation','D94','b','d4','A Slav with ...g6 – a Grünfeld-style fianchetto.',[
+ ['Main Line','d4 d5 c4 c6 Nf3 Nf6 e3 g6 Nc3 Bg7 Be2 O-O O-O Bg4','Solid centre plus a long-diagonal bishop.']]);
+O('neogrunfeld','Neo-Grünfeld Defense','D70–D79','b','d4','A Grünfeld against White\'s g3 fianchetto.',[
+ ['Main Line','d4 Nf6 c4 g6 g3 d5 Bg2 Bg7 cxd5 Nxd5 Nf3 O-O O-O Nb6 Nc3 Nc6','Pressure White\'s d4 pawn.']]);
+// ---------- BLACK vs flank openings ----------
+O('kingsenglish',"vs English: King's English (...e5)",'A25–A26','b','fl','Answer 1.c4 with ...e5 – a reversed Sicilian setup with ...g6.',[
+ ['Closed (Main Line)','c4 e5 Nc3 Nc6 g3 g6 Bg2 Bg7 d3 d6 Rb1 f5','Black plays on the kingside with ...f5.']]);
+O('eng4n','vs English: Four Knights','A28','b','fl','Develop both knights against 1.c4 e5, then strike with ...d5.',[
+ ['Main Line','c4 e5 Nc3 Nf6 Nf3 Nc6 g3 d5 cxd5 Nxd5 Bg2 Nb6 O-O Be7 d3 O-O','A reversed Dragon – but Black is solid.']]);
+O('anglogrunfeld','vs English: Anglo-Grünfeld','A16','b','fl','A Grünfeld-style reply to 1.c4.',[
+ ['Main Line','c4 Nf6 Nc3 d5 cxd5 Nxd5 g3 g6 Bg2 Nxc3 bxc3 Bg7 Rb1 Nd7','Pressure the long diagonal.']]);
+O('hedgehog','vs English: Hedgehog','A30','b','fl','Pawns on a6, b6, d6, e6 – spiky and full of counter-punches.',[
+ ['Main Line','c4 c5 Nf3 Nf6 g3 b6 Bg2 Bb7 O-O e6 Nc3 Be7 d4 cxd4 Qxd4 d6 Rd1 a6','Wait for the right moment for ...b5 or ...d5.']]);
+O('agincourt','vs English: Agincourt Defense','A13','b','fl','A Queen\'s Gambit Declined setup against 1.c4.',[
+ ['Main Line','c4 e6 Nf3 d5 g3 Nf6 Bg2 Be7 O-O O-O b3 c5 Bb2 Nc6','Solid and classical.']]);
+O('slavreti','vs Réti: Slav Setup','A06','b','fl','...d5, ...c6 and ...Bg4 – a solid wall against the Réti and KIA.',[
+ ['Main Line','Nf3 d5 g3 Nf6 Bg2 c6 O-O Bg4 d3 Nbd7 Nbd2 e5 e4 dxe4 dxe4','Develop the bishop outside the pawn chain.']]);
+O('kidreti',"vs Réti: King's Indian Setup",'A05','b','fl','Mirror White\'s fianchetto and strike with ...e5.',[
+ ['Main Line','Nf3 Nf6 g3 g6 Bg2 Bg7 O-O O-O d3 d6 c4 e5 Nc3 Nc6','A King\'s Indian structure with easy development.']]);
+O('froms',"vs Bird: From's Gambit",'A02','b','fl','Punish 1.f4 with ...e5! – a sharp gambit.',[
+ ['Main Line','f4 e5 fxe5 d6 exd6 Bxd6 Nf3 g5 g3 g4 Nh4 Ne7 d4 Ng6','Black attacks the weakened white king.']]);
+})();
+// extra lines for existing openings
+(function(){
+  const add=(id,name,moves,note)=>OPENINGS.find(o=>o.id===id).lines.push({name,moves,note});
+  add('ruy','Steinitz Defense','e4 e5 Nf3 Nc6 Bb5 d6 d4 Bd7 Nc3 Nf6 O-O Be7 Re1 exd4 Nxd4','Black holds e5 with ...d6 – solid but passive.');
+  add('scandi','Portuguese Gambit','e4 d5 exd5 Nf6 d4 Bg4 f3 Bf5 c4 e6 dxe6 Nc6','A sharp gambit: the bishop jumps out before ...e6.');
+  add('slav','Semi-Slav: Botvinnik','d4 d5 c4 c6 Nf3 Nf6 Nc3 e6 Bg5 dxc4 e4 b5 e5 h6 Bh4 g5 Nxg5 hxg5 Bxg5 Nbd7','One of the sharpest lines in chess.');
+})();
+
 
 // ================= pieces (custom SVG) =================
 const PP={
@@ -648,7 +835,9 @@ function miniBoard(line,side,plies=8){
 const LOGO=`<svg viewBox="0 0 45 45"><use href="#pc-bn"/></svg>`;
 
 // ================= app state =================
-const app={screen:'home',filter:'all',q:'',op:null,side:null,prev:null};
+const app={screen:'home',filter:'all',q:'',op:null,side:null,prev:null,closed:{we4:1,wd4:1,wfl:1,e4:1,d4:1,fl:1}};
+const GICON={we4:'♔',wd4:'♕',wfl:'♘',e4:'♚',d4:'♛',fl:'♞'};
+function subgroup(o){if(o.group!=='w')return o.group;const f=o.lines[0].moves.split(' ')[0];return f==='e4'?'we4':f==='d4'?'wd4':'wfl';}
 let S=null;
 function render(){
   const entering=app.prev!==app.screen; app.prev=app.screen;
@@ -686,22 +875,28 @@ function renderHome(entering){
     <button class="dcard ${masteredKeys().length?'':'dis'}" data-drill="mastered"><div class="ic">🏆</div><b>Mastered lines</b><span>${masteredKeys().length?'Keep them sharp':'Master one first'}</span></button>
     <button class="dcard" data-drill="w"><div class="ic">♔</div><b>White repertoire</b><span>All White lines</span></button>
     <button class="dcard" data-drill="b"><div class="ic">♚</div><b>Black repertoire</b><span>All Black lines</span></button>
+    <button class="dcard" data-drill="mains"><div class="ic">⭐</div><b>Main lines only</b><span>The best moves of all 100</span></button>
   </div>
   <input class="search" id="search" placeholder="Search openings or variations" value="${esc(app.q)}" autocomplete="off">
-  <div class="chips">${[['all','All'],['w','White'],['e4','Black vs 1.e4'],['d4','Black vs 1.d4'],['prog','In progress'],['done','Mastered']].map(([k,t])=>`<button class="chip ${app.filter===k?'on':''}" data-filter="${k}">${t}</button>`).join('')}</div>`;
-  const groups=[['w','Openings for White','1.e4 · 1.d4 · flank'],['e4','Black vs 1.e4','answers to king pawn'],['d4','Black vs 1.d4','answers to queen pawn']];
+  <div class="sec">All openings</div>
+  <div class="chips">${[['all','All'],['w','White'],['e4','Black vs 1.e4'],['d4','Black vs 1.d4'],['fl','Black vs flank'],['prog','In progress'],['done','Mastered']].map(([k,t])=>`<button class="chip ${app.filter===k?'on':''}" data-filter="${k}">${t}</button>`).join('')}</div>`;
+  const groups=[['we4','w','White · 1.e4 openings'],['wd4','w','White · 1.d4 openings'],['wfl','w','White · flank openings'],['e4','e4','Black · vs 1.e4'],['d4','d4','Black · vs 1.d4'],['fl','fl','Black · vs flank openings']];
   let any=false;
-  for(const [g,title,sub] of groups){
-    if(['w','e4','d4'].includes(app.filter)&&app.filter!==g) continue;
+  const searching=!!q||app.filter==='prog'||app.filter==='done';
+  for(const [g,fg,title] of groups){
+    if(['w','e4','d4','fl'].includes(app.filter)&&app.filter!==fg) continue;
     const list=OPENINGS.filter(o=>{
-      if(o.group!==g) return false;
+      if(subgroup(o)!==g) return false;
       if(q&&!(o.name.toLowerCase().includes(q)||o.lines.some(l=>l.name.toLowerCase().includes(q))||o.eco.toLowerCase().includes(q))) return false;
       const mc=masteredCount(o), started=o.lines.some((l,i)=>rec(o,i,'both').s);
       if(app.filter==='done'&&!mc) return false;
       if(app.filter==='prog'&&!(started||mc)) return false;
       return true;});
     if(!list.length) continue; any=true;
-    html+=`<div class="sec">${title} <em>${sub}</em></div>`;
+    const closed=!searching&&app.closed[g];
+    const gm=list.reduce((a,o)=>a+masteredCount(o),0), gl=list.reduce((a,o)=>a+o.lines.length,0);
+    html+=`<button class="gsec ${closed?'':'isopen'}" data-sec="${g}"><span class="gi">${GICON[g]}</span><span class="grow"><b>${title}</b><small>${list.length} openings · ${gm}/${gl} lines mastered</small></span><span class="chev ${closed?'':'open'}">›</span></button>`;
+    if(closed) continue;
     for(const o of list){
       const mc=masteredCount(o);
       html+=`<button class="ocard" data-op="${o.id}">${miniBoard(o.lines[0],o.side)}
@@ -718,6 +913,7 @@ function renderHome(entering){
   const cb=$('#contBtn'); if(cb) cb.onclick=()=>{const [op,i,side]=last;startSession({mode:store.last.mode,pool:[[op,i,side]],fixed:true,from:'home'});};
   document.querySelectorAll('[data-filter]').forEach(b=>b.onclick=()=>{app.filter=b.dataset.filter;render();});
   document.querySelectorAll('[data-op]').forEach(b=>b.onclick=()=>{app.op=OPENINGS.find(o=>o.id===b.dataset.op);app.side=app.op.side;go('opening');});
+  document.querySelectorAll('[data-sec]').forEach(b=>b.onclick=()=>{app.closed[b.dataset.sec]=!app.closed[b.dataset.sec];render();});
   document.querySelectorAll('[data-drill]').forEach(b=>b.onclick=()=>startDrill(b.dataset.drill));
   const s=$('#search'); s.oninput=()=>{app.q=s.value;const pos=s.selectionStart;render();const n=$('#search');n.focus();n.setSelectionRange(pos,pos);};
 }
@@ -725,6 +921,7 @@ function startDrill(kind){
   let pool=[],name='';
   if(kind==='weak'){pool=weakKeys().map(fromKey);name='Review mistakes';}
   else if(kind==='mastered'){pool=masteredKeys().map(fromKey).map(([o,i])=>[o,i,o.side]);name='Mastered lines';}
+  else if(kind==='mains'){pool=OPENINGS.map(o=>[o,0,o.side]);name='Main lines only';}
   else{OPENINGS.forEach(o=>{if(kind==='all'||o.side===kind)o.lines.forEach((l,i)=>pool.push([o,i,o.side]));});
     name=kind==='all'?'Random mix':kind==='w'?'White repertoire':'Black repertoire';}
   if(pool.length) startSession({mode:'best',pool,drillName:name,from:'home'});
